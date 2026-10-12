@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  validar-e-empacotar:
+    name: Validar e empacotar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validar JSON
+        run: |
+          find historia_judaico_crista -name '*.json' -print0 |
+            xargs -0 -I{} sh -c 'python3 -m json.tool "{}" > /dev/null && echo "ok: {}"'
+
+      - name: Checar a sintaxe do JavaScript
+        run: |
+          # Os gatilhos são scripts comuns; o mapa é um módulo ES (export function*).
+          node --check historia_judaico_crista/maps/random/levante_neemias_triggers.js
+          cp historia_judaico_crista/maps/random/levante_neemias.js "$RUNNER_TEMP/levante_neemias.mjs"
+          node --check "$RUNNER_TEMP/levante_neemias.mjs"
+
+      - name: Empacotar o .pyromod
+        id: pacote
+        run: |
+          versao=$(python3 -c "import json; print(json.load(open('historia_judaico_crista/mod.json'))['version'])")
+          arquivo="historia_judaico_crista-${versao}.pyromod"
+          (cd historia_judaico_crista && zip -r -X "../${arquivo}" .)
+          echo "arquivo=${arquivo}" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pyromod
+          path: ${{ steps.pacote.outputs.arquivo }}
+
+      - name: Publicar release (tags v*)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.pacote.outputs.arquivo }}
+
+  testar-no-motor:
+    name: Testar no motor do 0 A.D. (R28, sem tela)
+    runs-on: ubuntu-latest
+    # O Ubuntu 26.04 empacota o 0 A.D. Release 28.
+    container: ubuntu:26.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar o 0 A.D.
+        run: |
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends 0ad python3
+
+      - name: Rodar vitória e derrota do capítulo Neemias
+        run: |
+          # O jogo se recusa a rodar como root.
+          useradd -m tester
+          chmod -R a+rX "$GITHUB_WORKSPACE"
+          runuser -u tester -- env PYROGENESIS=/usr/games/pyrogenesis bash tests/headless/run.sh

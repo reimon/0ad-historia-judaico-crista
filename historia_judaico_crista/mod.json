@@ -1,0 +1,8 @@
+{
+	"name": "historia_judaico_crista",
+	"version": "0.1.0",
+	"label": "História Judaico-Cristã",
+	"url": "https://github.com/reimon/0ad-historia-judaico-crista",
+	"description": "Campanha educativa sobre a história judaico-cristã, do período persa aos hasmoneus. Capítulo piloto: Neemias e os muros de Jerusalém (c. 445 a.C.).",
+	"dependencies": ["0ad>=0.28.0"]
+}

@@ -1,0 +1,33 @@
+{
+	"settings" : {
+		"Name" : "Neemias: os muros de Jerusalém",
+		"Script" : "levante_neemias.js",
+		"Description" : "Jerusalém, por volta de 445 a.C. A cidade é uma pequena província do Império Persa, com os muros derrubados e as portas queimadas. Neemias tem autorização do rei Artaxerxes I para reconstruí-los. Repare todo o muro antes que terminem os 52 dias, enquanto Sambalate, Tobias e Gesém tentam impedir a obra. Mapa feito para 2 jogadores: você e os adversários controlados pelo roteiro.",
+		"Keywords": ["trigger"],
+		"CircularMap" : true,
+		"PlayerData" : [
+			{
+				"Name" : "Yehud",
+				"Civ" : "pers"
+			},
+			{
+				"Name" : "Sambalate e aliados",
+				"Civ" : "pers"
+			}
+		],
+		"TriggerScripts" : [
+			"scripts/TriggerHelper.js",
+			"scripts/Tutorial.js",
+			"random/levante_neemias_triggers.js"
+		],
+		"SupportedTriggerDifficulties" : {
+			"Values" : [
+				"Very Easy",
+				"Easy",
+				"Medium",
+				"Hard",
+				"Very Hard"
+			]
+		}
+	}
+}

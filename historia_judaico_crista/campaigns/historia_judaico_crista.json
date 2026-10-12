@@ -1,0 +1,14 @@
+{
+	"Name": "História Judaico-Cristã: do exílio aos hasmoneus",
+	"Description": "Campanha educativa em capítulos curtos, começando pelos períodos persa e helenístico (538 a 63 a.C.). Cada capítulo traz o contexto histórico, indica a fonte do relato e propõe uma missão jogável. Esta versão traz o capítulo piloto.",
+	"Levels": {
+		"neemias": {
+			"Name": "1. Neemias: os muros de Jerusalém (c. 445 a.C.)",
+			"Map": "random/levante_neemias",
+			"MapType": "random",
+			"Description": "Judá é uma pequena província do Império Persa. Neemias, copeiro do rei Artaxerxes I, volta a Jerusalém para reconstruir os muros. Repare todo o muro em 52 dias enquanto Sambalate, Tobias e Gesém tentam impedir a obra."
+		}
+	},
+	"Order": ["neemias"],
+	"ShowUnavailable": true
+}
